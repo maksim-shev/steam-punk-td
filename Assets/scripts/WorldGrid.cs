@@ -40,6 +40,7 @@ public class WorldGrid : MonoBehaviour
     {
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
         float percentY = (worldPosition.y + gridWorldSize.y / 2) / gridWorldSize.y;
+
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
@@ -71,20 +72,20 @@ public class WorldGrid : MonoBehaviour
         return neighbours;
     }
     public List<NodeForGrid> path;
-    //void OnDrawGizmos()
-    //{
-    //    Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
-    //    if (grid != null)
-    //    {
-    //        foreach (NodeForGrid n in path)
-    //        {
-    //            //Gizmos.color = (n.walkable) ? Color.white : Color.red;
-    //            //if (path != null)
-    //            //    if (path.Contains(n))
-    //            //        Gizmos.color = Color.black;
-    //            Gizmos.DrawSphere(n.worldPosition, nodeDiameter);
-    //        }
-    //    }
-    //}
+        if (grid != null)
+        {
+            foreach (NodeForGrid n in path)
+            {
+                Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                if (path != null)
+                    if (path.Contains(n))
+                        Gizmos.color = Color.black;
+                Gizmos.DrawSphere(n.worldPosition, nodeDiameter);
+            }
+        }
+    }
 }
