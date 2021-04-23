@@ -65,32 +65,4 @@ public class PathFinder : MonoBehaviour
         }
         return path;
     }
-
-    //int GetDistance(NodeForGrid nodeA, NodeForGrid nodeB)
-    //{
-    //    float dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
-    //    float dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
-
-    //    if (dstX > dstY)
-    //        return 14 * dstY + 10 * (dstX - dstY);
-    //    return 14 * dstX + 10 * (dstY - dstX);
-    //}
-
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawWireCube(transform.position, new Vector3(2.5f, 1, 1.3f));
-
-        if (grid != null)
-        {
-            foreach (NodeForGrid n in displayVisited)
-            {
-                Gizmos.color = Color.black;
-                // Gizmos.DrawSphere(n.worldPosition, 0.005f);
-                if (n.parent != null)
-                {
-                    Gizmos.DrawLine(n.worldPosition, n.parent.worldPosition);
-                }
-            }
-        }
-    }
 }

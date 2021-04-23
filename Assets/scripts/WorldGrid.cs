@@ -72,20 +72,12 @@ public class WorldGrid : MonoBehaviour
         return neighbours;
     }
     public List<NodeForGrid> path;
-    void OnDrawGizmos()
-    {
-        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
 
-        if (grid != null)
+    private void OnDrawGizmos()
+    {
+        foreach(NodeForGrid point in grid)
         {
-            foreach (NodeForGrid n in path)
-            {
-                Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                if (path != null)
-                    if (path.Contains(n))
-                        Gizmos.color = Color.black;
-                Gizmos.DrawSphere(n.worldPosition, nodeDiameter);
-            }
+            Gizmos.DrawSphere(point.worldPosition, .01f);
         }
     }
 }

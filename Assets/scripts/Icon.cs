@@ -3,39 +3,33 @@ using UnityEngine;
 
 public class Icon : MonoBehaviour
 {
-    public GameObject worldPath;
+    public float step;
+    public float distance;
+    public int hp;
+
+    private GameObject worldPath;
     private PathFinder PathFinder;
     private WorldGrid WorldGrid;
     private List<NodeForGrid> path;
-    NodeForGrid endNode;
-    NodeForGrid startNode;
-    float step;
-    float progress = 0;
+    private NodeForGrid endNode;
+    private NodeForGrid startNode;
+    private float progress = 0;
 
     private void Start()
     {
+        worldPath = GameObject.Find("WorldGrid");
         PathFinder = worldPath.GetComponent<PathFinder>();
         WorldGrid = worldPath.GetComponent<WorldGrid>();
         startNode = WorldGrid.NodeFromWorldPoint(transform.position);
         endNode = WorldGrid.NodeFromWorldPoint(PathFinder.target.position);
         path = PathFinder.RetracePath(startNode, endNode);
-        step = 0.05f;
-    }
-
-    private void Update()
-    {
-        /*PathFinder = worldPath.GetComponent<PathFinder>();
-        WorldGrid = worldPath.GetComponent<WorldGrid>();
-        endNode = WorldGrid.NodeFromWorldPoint(transform.position);
-        startNode = WorldGrid.NodeFromWorldPoint(PathFinder.target.position);
-        path = PathFinder.RetracePath(startNode, endNode);*/
     }
 
     private void FixedUpdate()
     {
         if (path.Count != 1)
         {
-            if (Vector3.Distance(transform.position, path[0].worldPosition) <= 0.01f)
+            if (Vector3.Distance(transform.position, path[0].worldPosition) <= distance)
             {
                 progress = 0;
                 path.RemoveAt(0);
@@ -44,30 +38,20 @@ public class Icon : MonoBehaviour
             progress += step;
         }
     }
-    void OnDrawGizmos()
+    private void Update()
     {
-        Gizmos.DrawWireCube(transform.position, new Vector3(2.5f, 1, 1.3f));
-        if (startNode != null)
+        if (hp == 0)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(startNode.worldPosition, 0.05f);
+            Destroy(this.gameObject);
         }
-        if (endNode != null)
+    }
+    private void OnTriggerEnter2D(Collider2D bullet)
+    {
+        if (bullet.transform.tag == "Bullet")
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(endNode.worldPosition, 0.05f);
-        }
-        if (path != null)
-        {
-            foreach (NodeForGrid n in path)
-            {
-                Gizmos.color = Color.black;
-                Gizmos.DrawSphere(n.worldPosition, 0.005f);
-                if (n.parent != null)
-                {
-                    Gizmos.DrawLine(n.worldPosition, n.parent.worldPosition);
-                }
-            }
+            hp--;
+            Destroy(bullet.gameObject);
+            
         }
     }
 }
